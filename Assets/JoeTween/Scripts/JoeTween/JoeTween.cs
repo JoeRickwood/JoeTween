@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace JoeTween
 {
+    internal enum TweenSpace
+    {
+        LOCAL,
+        WORLD
+    }
+
     public static class TweenManager
     {
         private static bool Initialized = false;

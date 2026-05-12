@@ -1,23 +1,59 @@
+using Unity.VisualScripting.YamlDotNet.Core.Events;
 using UnityEngine;
 
 namespace JoeTween
 {
-    internal abstract class TweenAction<T>
+    internal abstract class TweenAction
     {
+        public AnimationCurve tweenCurve;
         public float animationLength = 1.0f;
-        private float t = 0.0f;
 
+        private TweenAction[] sequenced;
+
+        protected bool ended;
+
+        public abstract void Initialize(GameObject _component);
+
+        public virtual void Update(float _time)
+        {
+            if (_time > animationLength)
+            {
+                if (ended == false)
+                    EndAction();
+
+                foreach (var t in sequenced)
+                {
+                    t.Update(_time - animationLength);
+                }
+            }
+        }
+
+        public virtual void StartAction()
+        {
+
+        }
+
+        public virtual void EndAction()
+        {
+            ended = true;
+
+            if (sequenced != null)
+            {
+                foreach (var t in sequenced)
+                {
+                    t.StartAction();
+                }
+            }
+        }
+    }
+
+    internal abstract class TweenAction<T> : TweenAction
+    {
         public T component;
 
-        public abstract void Update(float _time);
-
-        public virtual void StartAction(T _component)
+        public override void Initialize(GameObject _component)
         {
-            component = _component;
-        }
-        public virtual void EndAction(T _transform)
-        {
-            t = animationLength;
+            component = _component.GetComponent<T>();
         }
     }
 }
