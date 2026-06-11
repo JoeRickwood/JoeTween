@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JoeTween
 {
-    internal enum TweenSpace
+    public enum TweenSpace
     {
         LOCAL,
         WORLD
@@ -14,39 +14,79 @@ namespace JoeTween
         private static bool Initialized = false;
 
         //Link GameObjects To Tween Sequences
-        private static Dictionary<GameObject, List<Tween>> activeTweenSequences;
-
+        private static Dictionary<object, List<Tween>> activeTweenSequences;
+        private static GameObject dummy;
+        private static Queue<Tween> cleanup;
 
         private static void Initialize()
         {
+            if (Initialized)
+                return;
+
             Initialized = true;
 
-            activeTweenSequences = new Dictionary<GameObject, List<Tween>>();
+            activeTweenSequences = new Dictionary<object, List<Tween>>();
+            cleanup = new Queue<Tween>();
+
+            if (dummy == null)
+                dummy = new GameObject("TweenUpdateManager", typeof(TweenUpdater));
+
+            dummy.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+
+            GameObject.DontDestroyOnLoad(dummy);
         }
 
-        public static void StartTween(GameObject _obj, Tween _tween)
+        public static void StartTween(TweenAction _tweenAction)
         {
             if(!Initialized)
                 Initialize();
 
-            activeTweenSequences[_obj].Add(_tween);
+            Tween tween = new Tween($"Action{System.Guid.NewGuid()}", _tweenAction);
+            object target = _tweenAction.GetTarget();
+
+
+            if (!activeTweenSequences.ContainsKey(target))
+                activeTweenSequences.Add(target, new List<Tween>());
+
+            activeTweenSequences[_tweenAction.GetTarget()].Add(tween);
+
+            tween.Play();
         }
 
-        public static void StopTween(GameObject _obj, Tween _tween)
+        public static void StopTween(TweenAction _tween)
         {
             if (!Initialized)
                 Initialize();
 
-            //TODO -> Code This
+            //List Of Sequences On A GameObject
+            foreach (var item in activeTweenSequences[_tween.GetTarget()])
+            {
+                if (item.action != _tween)
+                    continue;
+
+                item.Stop();
+                cleanup.Enqueue(item);
+
+                return;
+            }
         }
 
-        public static void StopAllTweens(GameObject _obj)
+        internal static void UpdateTweens()
         {
-            if (!Initialized)
-                Initialize();
+            foreach(List<Tween> tweenList in activeTweenSequences.Values)
+            {
+                foreach (Tween tween in tweenList)
+                {
+                    tween.Update();
+                }
+            }
 
-            //TODO -> Code This
+            //Cleanup Queue
+            while(cleanup.Count > 0)
+            {
+                Tween tween = cleanup.Dequeue();
+                activeTweenSequences[tween.action.GetTarget()].Remove(tween);
+            }
         }
-
     }
 }

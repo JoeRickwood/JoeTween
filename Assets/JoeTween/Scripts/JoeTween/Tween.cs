@@ -5,22 +5,36 @@ namespace JoeTween
     public class Tween
     {
         internal string name;
-        internal TweenAction startAction;
+        internal TweenAction action;
+        internal float tweenTime;
+        internal GameObject target;
 
         internal Tween(string _name, TweenAction _start)
         {
             name = _name;
-            startAction = _start;
+            action = _start;
+            tweenTime = 0;
         }
 
-        internal void Play(GameObject _target)
+        internal void Update()
         {
-            TweenManager.StartTween(_target, this);
+            tweenTime += Time.deltaTime;
+            action.Update(tweenTime);
         }
 
-        internal void InitializeTween(GameObject _target)
+        internal void Play()
         {
-            startAction.Initialize(_target);
+            action.SetPaused(false);
+        }
+
+        internal void Pause()
+        {
+            action.SetPaused(true);
+        }
+
+        internal void Stop()
+        {
+            action.StopAction();
         }
     }
 }
