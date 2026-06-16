@@ -8,6 +8,7 @@ namespace JoeTween
         internal TweenAction action;
         internal float tweenTime;
         internal GameObject target;
+        internal bool paused;
 
         internal Tween(string _name, TweenAction _start)
         {
@@ -24,12 +25,12 @@ namespace JoeTween
 
         internal void Play()
         {
-            action.SetPaused(false);
+            paused = false;
         }
 
         internal void Pause()
         {
-            action.SetPaused(true);
+            paused = true;
         }
 
         internal void Stop()

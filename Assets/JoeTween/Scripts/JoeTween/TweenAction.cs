@@ -1,15 +1,16 @@
-using System;
-using Unity.VisualScripting.YamlDotNet.Core.Events;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JoeTween
 {
+    [System.Serializable]
     public abstract class TweenAction
     {
         public AnimationCurve tweenCurve;
         public float animationLength = 1.0f;
 
-        private TweenAction[] sequenced;
+        [SerializeReference]
+        private List<TweenAction> sequenced;
 
         protected bool ended;
         protected bool looping;
@@ -21,10 +22,16 @@ namespace JoeTween
             animationLength = _animationLength;
 
             ended = false;
-            sequenced = new TweenAction[0];
+            sequenced = new List<TweenAction>();
             looping = _looping;
             playing = false;
         }
+
+        public TweenAction Clone()
+        {
+            return this.MemberwiseClone() as TweenAction;
+        }
+
 
         public void SetLoopType(WrapMode _mode)
         {
@@ -34,23 +41,34 @@ namespace JoeTween
             tweenCurve.postWrapMode = _mode;    
         }
 
+        public virtual void UpdateTargetRecursive(GameObject _target)
+        {
+            for (int i = 0; i < sequenced.Count; i++)
+            {
+                sequenced[i].UpdateTargetRecursive(_target);
+            }
+        }
+
+        public void AddSequenced(TweenAction _sequenced)
+        {
+            sequenced.Add(_sequenced);
+        }
+
         public abstract object GetTarget();
 
-        public virtual void Update(float _time)
+        public virtual void Update(float time)
         {
-            if (_time > animationLength && looping == false)
-            {
-                if (IsFinished())
-                    TweenManager.StopTween(this);
+            if (time <= animationLength || looping)
+                return;
 
-                if (ended == false)
-                    EndAction();
+            if (!ended)
+                EndAction();
 
-                foreach (var t in sequenced)
-                {
-                    t.Update(_time - animationLength);
-                }
-            }
+            foreach (var t in sequenced)
+                t.Update(time - animationLength);
+
+            if (IsFinished())
+                TweenManager.StopTween(this);
         }
 
         public bool IsFinished()
@@ -103,15 +121,16 @@ namespace JoeTween
             
         }
 
-
         internal float GetTweenProgress(float _time)
         {
             return tweenCurve.Evaluate(_time / animationLength);
         }
     }
 
+    [System.Serializable]
     public abstract class TweenAction<T> : TweenAction
     {
+        [SerializeReference]
         public T component;
 
         public TweenAction(AnimationCurve _animationCurve, float _animationLength, T _component, bool _looping) : base(_animationCurve, _animationLength, _looping)
@@ -122,6 +141,13 @@ namespace JoeTween
         public override object GetTarget()
         {
             return component;
+        }
+
+        public override void UpdateTargetRecursive(GameObject _target)
+        {
+            component = _target.GetComponent<T>();
+
+            base.UpdateTargetRecursive(_target);
         }
     }
 }

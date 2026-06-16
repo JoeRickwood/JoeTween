@@ -20,7 +20,7 @@ namespace JoeTween
 
         private static void Initialize()
         {
-            if (Initialized)
+            if (Initialized && dummy != null)
                 return;
 
             Initialized = true;
@@ -36,6 +36,29 @@ namespace JoeTween
             GameObject.DontDestroyOnLoad(dummy);
         }
 
+        public static void StartTween(GameObject _target, TweenRuntimeGraph _tween)
+        {
+            if (!Initialized || dummy == null)
+                Initialize();
+
+            TweenRuntimeGraph graph = _tween.Get();
+
+            Tween tween = new Tween($"Action{System.Guid.NewGuid()}", graph.GetSequence());
+            tween.action.UpdateTargetRecursive(_target);
+            object target = tween.action.GetTarget();
+
+
+            if (!activeTweenSequences.ContainsKey(target))
+                activeTweenSequences.Add(target, new List<Tween>());
+
+            activeTweenSequences[target].Add(tween);
+
+            Debug.Log($"Tween {tween}");
+
+            tween.Play();
+        }
+
+
         public static void StartTween(TweenAction _tweenAction)
         {
             if(!Initialized)
@@ -49,6 +72,7 @@ namespace JoeTween
                 activeTweenSequences.Add(target, new List<Tween>());
 
             activeTweenSequences[_tweenAction.GetTarget()].Add(tween);
+
 
             tween.Play();
         }
@@ -66,6 +90,8 @@ namespace JoeTween
 
                 item.Stop();
                 cleanup.Enqueue(item);
+
+                Debug.Log($"Queued cleanup: {item.name}");
 
                 return;
             }
@@ -85,6 +111,9 @@ namespace JoeTween
             while(cleanup.Count > 0)
             {
                 Tween tween = cleanup.Dequeue();
+
+                Debug.Log($"Removing tween: {tween.name}");
+
                 activeTweenSequences[tween.action.GetTarget()].Remove(tween);
             }
         }

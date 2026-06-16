@@ -3,37 +3,24 @@ using UnityEngine;
 
 namespace JoeTween
 {
-
+    [System.Serializable]
     public class MoveTween : TweenAction<Transform>
     {
         public TweenSpace space;
-        public Vector3 moveTo;
-
-        private Transform target;
-        private Vector3 startPos;
-        private Vector3 endPos;
+        public Vector3 startPos;
+        public Vector3 endPos;
 
         public MoveTween(
             AnimationCurve _animationCurve, float _animationLength, bool _looping,
-            Transform _component,
-            Vector3 _startPos, Vector3 _endPos
-        ) : base(_animationCurve, _animationLength, _component, _looping)
+            Transform _component, Vector3 _startPos, Vector3 _endPos
+        ) : base(_animationCurve, _animationLength,_component, _looping)
         {
-            target = _component;
             startPos = _startPos;
             endPos = _endPos;
         }
 
         public override void StartAction()
         {
-            switch (space)
-            {
-                default: case TweenSpace.LOCAL: startPos = component.localPosition; break;
-                case TweenSpace.WORLD: startPos = component.position; break;
-            }
- 
-            endPos = moveTo;
-
             base.StartAction();
         }
 
@@ -51,15 +38,15 @@ namespace JoeTween
 
         public override void Update(float _time)
         {
-            if(playing)
+            base.Update(_time);
+
+            if (playing)
             {
                 if (space == TweenSpace.LOCAL)
                     component.localPosition = Vector3.LerpUnclamped(startPos, endPos, GetTweenProgress(_time));
                 else if (space == TweenSpace.WORLD)
                     component.position = Vector3.LerpUnclamped(startPos, endPos, GetTweenProgress(_time));
             }
-
-            base.Update(_time);
         }
     }
 }

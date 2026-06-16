@@ -3,19 +3,11 @@ using JoeTween;
 
 public class TweenTest : MonoBehaviour
 {
+    public TweenRuntimeGraph tween;
 
-    private void Start()
+    private void Update()
     {
-        AnimationCurve moveCurve = EasingFunctions.EaseOut();
-
-        TweenAction<Transform> tween = new MoveTween
-        (
-            moveCurve, 1f, false,
-            transform, Vector3.zero, new Vector3(5, 5, 0)
-        );
-
-        tween.SetLoopType(WrapMode.Default);
-
-        TweenManager.StartTween(tween);
+        if(Input.GetKeyDown(KeyCode.Space))
+            TweenManager.StartTween(gameObject, tween);
     }
 }
