@@ -7,20 +7,37 @@ namespace JoeTween
     public class MoveTween : TweenAction<Transform>
     {
         public TweenSpace space;
-        public Vector3 startPos;
-        public Vector3 endPos;
+        public TweenValue<Vector3> startPos;
+        public TweenValue<Vector3> endPos;
 
         public MoveTween(
             AnimationCurve _animationCurve, float _animationLength, bool _looping,
             Transform _component, Vector3 _startPos, Vector3 _endPos
         ) : base(_animationCurve, _animationLength,_component, _looping)
         {
-            startPos = _startPos;
-            endPos = _endPos;
+            startPos.value = _startPos;
+            endPos.value = _endPos;
+        }
+
+        public override void CloneModifiers()
+        {
+            base.CloneModifiers();
+
+            if (startPos.valueModifier != null)
+                startPos.valueModifier = startPos.valueModifier.Clone<Vector3>();
+
+            if (endPos.valueModifier != null)
+                endPos.valueModifier = endPos.valueModifier.Clone<Vector3>();
         }
 
         public override void StartAction()
         {
+            switch (space)
+            {
+                default: case TweenSpace.LOCAL: component.localPosition = startPos; break;
+                case TweenSpace.WORLD: component.position = startPos; break;
+            }
+
             base.StartAction();
         }
 
