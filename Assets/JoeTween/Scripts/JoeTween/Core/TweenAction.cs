@@ -1,3 +1,14 @@
+/***********************************************************************
+    Auckland
+    New Zealand
+
+    (c) 2026 Joe Rickwood
+
+    File Name   :   TweenAction.cs
+    Description :   Implementation For Action Tweens In Context Of GameObject-Components
+    Author      :   Joe Rickwood
+**************************************************************************/
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,60 +46,52 @@ namespace JoeTween
             return tmp;
         }
 
+        /// <summary>
+        /// Used For Initializing Values On Tween Objects
+        /// </summary>
+        /// <param name="_obj">Object The Tween Is Acting On</param>
         public void OnActionStart(GameObject _obj) 
         {
             if (valueModifier != null)
                 valueModifier.OnActionStart(_obj);
         }
 
-
+        //Means We Can Implicitly Cast A TweenValue To Type T 
         public static implicit operator T(TweenValue<T> tweenValue)
         {
             return tweenValue.GetValue();
         }
     }
 
-    [Serializable]
-    public class TweenActionValueModifier
-    {
-        public virtual TweenActionValueModifier<T> Clone<T>()
-        {
-            return this.MemberwiseClone() as TweenActionValueModifier<T>;
-        }
-    }
-
-    [Serializable]
-    public abstract class TweenActionValueModifier<T> : TweenActionValueModifier
-    {   
-        public abstract void OnActionStart(GameObject _componentHolder);
-        public abstract void AlterValue(out T _value);
-    }
-
     [System.Serializable]
     public abstract class TweenAction
     {
-        public AnimationCurve tweenCurve;
-        public TweenValue<float> animationLength;
+        public AnimationCurve tweenCurve; //Tween Curve Used As A Easing Function To Smooth Out The Value Change
+        public TweenValue<float> animationLength; //The Length Of Time The Animation Takes To Complete
 
         [SerializeReference]
-        private List<TweenAction> sequenced;
-        public GameObject target;
+        private List<TweenAction> sequenced; //List Of Sequenced Actions To Perform After This Action Complete
+        public GameObject target; //Target That The Tween Component Exists On
 
+        //General Tween Action Flow Bools
         protected bool ended;
-        protected bool looping;
         protected bool playing;
+        protected bool looping;
 
         public TweenAction(AnimationCurve _animationCurve, float _animationLength, bool _looping)
         {
             tweenCurve = _animationCurve;
             animationLength.value = _animationLength;
 
-            ended = false;
             sequenced = new List<TweenAction>();
-            looping = _looping;
+
+            ended = false;
             playing = false;
+
+            looping = _looping;
         }
 
+        //Should Be Called Recursively On Derived Actions To Clone All Values 
         public virtual void CloneModifiers()
         {
             if(animationLength.valueModifier != null)
@@ -99,12 +102,13 @@ namespace JoeTween
         {
             TweenAction action = this.MemberwiseClone() as TweenAction;
 
+            //Clones Modifiers Action Creating The Action
             action.CloneModifiers();
 
             return action;
         }
 
-
+        //Sets Loop Mode Of The Tween
         public void SetLoopType(WrapMode _mode)
         {
             looping = _mode == WrapMode.Loop || _mode == WrapMode.PingPong;
@@ -113,6 +117,7 @@ namespace JoeTween
             tweenCurve.postWrapMode = _mode;    
         }
 
+        //Goes Through All Sequenced Actions And This Action And Updates The Target 
         public virtual void UpdateTargetRecursive(GameObject _target)
         {
             target = _target;
@@ -123,27 +128,29 @@ namespace JoeTween
             }
         }
 
+        //Adds A Sequenced Action To The Current Action
         public void AddSequenced(TweenAction _sequenced)
         {
             sequenced.Add(_sequenced);
-
-
-            Debug.Log($"{sequenced.Count} {this}");
         }
 
         public abstract object GetTarget();
 
+
+        //This Base Function Should Be Called On Derived Actions Implementing Logic
         public virtual void Update(float _time)
         {
             if (_time <= animationLength || looping)
                 return;
 
+            //Logic For If The Timer Is Currently AFTER The Animaton Is Finished
+            
+            //End Action If Not Ended Yet
             if (!ended)
                 EndAction();
 
             foreach (var t in sequenced)
             {
-                
                 t.Update(_time - animationLength);
             }      
 
@@ -151,6 +158,7 @@ namespace JoeTween
                 TweenManager.StopTween(this);
         }
 
+        //Has This Action Finished
         public bool IsFinished()
         {
             bool value = ended == true;
@@ -158,6 +166,7 @@ namespace JoeTween
             if (sequenced == null)
                 return value;
 
+            //Recursively Goes Through And Checks If Its Sequenced Actions Are Finished
             foreach (var t in sequenced)
             {
                 if (t.IsFinished() == false)
@@ -209,6 +218,10 @@ namespace JoeTween
         }
     }
 
+    /// <summary>
+    /// Typed Tween Action
+    /// </summary>
+    /// <typeparam name="T"> Type Of Component To Tween </typeparam>
     [System.Serializable]
     public abstract class TweenAction<T> : TweenAction
     {
@@ -227,6 +240,7 @@ namespace JoeTween
 
         public override void UpdateTargetRecursive(GameObject _target)
         {
+            //Resets The Gathered Component
             component = _target.GetComponent<T>();
 
             base.UpdateTargetRecursive(_target);

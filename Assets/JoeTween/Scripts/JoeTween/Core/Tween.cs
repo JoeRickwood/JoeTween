@@ -1,14 +1,25 @@
+/***********************************************************************
+    Auckland
+    New Zealand
+
+    (c) 2026 Joe Rickwood
+
+    File Name   :   Tween.cs
+    Description :   Implementation For Tween Data Structure Class To Be Played On The TweenManager
+    Author      :   Joe Rickwood
+**************************************************************************/
+
 using UnityEngine;
 
 namespace JoeTween
 {
-    public class Tween
+    public sealed class Tween
     {
-        internal string name;
-        internal TweenAction action;
-        internal float tweenTime;
-        internal GameObject target;
-        internal bool paused;
+        public string name;
+        public TweenAction action;
+        private float tweenTime;
+        public GameObject target;
+        public bool isPaused;
 
         internal Tween(string _name, TweenAction _start)
         {
@@ -19,18 +30,19 @@ namespace JoeTween
 
         internal void Update()
         {
-            tweenTime += Time.deltaTime;
-            action.Update(tweenTime);
+            tweenTime += Time.deltaTime; //Iterate On Tween Time
+
+            action.Update(tweenTime); //Update The Action With The Current Tween Time
         }
 
         internal void Play()
         {
-            paused = false;
+            isPaused = false;
         }
 
         internal void Pause()
         {
-            paused = true;
+            isPaused = true;
         }
 
         internal void Stop()
