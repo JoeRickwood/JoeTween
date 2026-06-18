@@ -93,8 +93,6 @@ namespace JoeTween
                 item.Stop();
                 cleanup.Enqueue(item);
 
-                Debug.Log($"Queued cleanup: {item.name}");
-
                 return;
             }
         }
@@ -113,8 +111,6 @@ namespace JoeTween
             while(cleanup.Count > 0)
             {
                 Tween tween = cleanup.Dequeue();
-
-                Debug.Log($"Removing tween: {tween.name}");
 
                 activeTweenSequences[tween.action.GetTarget()].Remove(tween);
             }

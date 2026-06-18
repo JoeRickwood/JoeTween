@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Unity.GraphToolkit.Editor;
 using UnityEngine;
 
 namespace JoeTween
 {
+    /// <summary>
+    /// Tween Value Is Used To Store A Variable Changable By A TweenValueModifier
+    /// </summary>
+    /// <typeparam name="T"> The value type of the variable </typeparam>
     [Serializable]
     public struct TweenValue<T>
     {
@@ -13,35 +16,29 @@ namespace JoeTween
         [SerializeReference]
         public TweenActionValueModifier<T> valueModifier;
 
+        public TweenValue(T _val, TweenActionValueModifier<T> _mod = null) 
+        {
+            value = _val;
+            valueModifier = _mod; //Value Modifier Is Not Needed, However Can Exist
+        }
+
+        //Gets The True Value Of This TweenValue
         public T GetValue()
         {
+            //Create Tmp Variation Of Value
             T tmp = value;
 
+            //If Modifier Exists, Update The Value To Be The Modifiers One Instead
             if(valueModifier != null)
                 valueModifier.AlterValue(out tmp);
 
             return tmp;
         }
 
-        public void LoadMod(IPort _port)
+        public void OnActionStart(GameObject _obj) 
         {
-            valueModifier = null;
-            List<IPort> connectedPorts = new List<IPort>();
-            _port.GetConnectedPorts(connectedPorts);
-
-            if (connectedPorts == null || connectedPorts.Count == 0)
-                return;
-
-            IPort port = connectedPorts[0];
-
-            if (port.GetNode() is JoeTweenFunctionNode<T> node)
-            {
-                valueModifier = node.GetModifier() as TweenActionValueModifier<T>;
-            }   
-            else
-            {
-                valueModifier = null;
-            }      
+            if (valueModifier != null)
+                valueModifier.OnActionStart(_obj);
         }
 
 
@@ -54,7 +51,7 @@ namespace JoeTween
     [Serializable]
     public class TweenActionValueModifier
     {
-        public TweenActionValueModifier<T> Clone<T>()
+        public virtual TweenActionValueModifier<T> Clone<T>()
         {
             return this.MemberwiseClone() as TweenActionValueModifier<T>;
         }
@@ -62,7 +59,8 @@ namespace JoeTween
 
     [Serializable]
     public abstract class TweenActionValueModifier<T> : TweenActionValueModifier
-    {
+    {   
+        public abstract void OnActionStart(GameObject _componentHolder);
         public abstract void AlterValue(out T _value);
     }
 
@@ -74,6 +72,7 @@ namespace JoeTween
 
         [SerializeReference]
         private List<TweenAction> sequenced;
+        public GameObject target;
 
         protected bool ended;
         protected bool looping;
@@ -116,6 +115,8 @@ namespace JoeTween
 
         public virtual void UpdateTargetRecursive(GameObject _target)
         {
+            target = _target;
+
             for (int i = 0; i < sequenced.Count; i++)
             {
                 sequenced[i].UpdateTargetRecursive(_target);
@@ -169,6 +170,8 @@ namespace JoeTween
         public virtual void StartAction()
         {
             playing = true;
+
+            animationLength.OnActionStart(target);
         }
 
         public void SetPaused(bool _pauseState) 

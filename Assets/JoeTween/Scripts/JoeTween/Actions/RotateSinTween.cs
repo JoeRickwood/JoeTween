@@ -23,14 +23,31 @@ namespace JoeTween
 
         public override void StartAction()
         {
+            axis.OnActionStart(target);
+            frequency.OnActionStart(target);
+            amplitude.OnActionStart(target);
+
             base.StartAction();
+        }
+
+        public override void CloneModifiers()
+        {
+            if (axis.valueModifier != null)
+                axis.valueModifier = axis.valueModifier.Clone<Vector3>();
+
+            if (frequency.valueModifier != null)
+                frequency.valueModifier = frequency.valueModifier.Clone<float>();
+
+            if (amplitude.valueModifier != null)
+                amplitude.valueModifier = amplitude.valueModifier.Clone<float>();
+
+            base.CloneModifiers();
         }
 
         public override void EndAction()
         {
             base.EndAction();
         }
-
 
         public override void Update(float _time)
         {
@@ -41,9 +58,9 @@ namespace JoeTween
                 float value = Mathf.Sin(_time * frequency) * amplitude;
 
                 if(space == TweenSpace.LOCAL)
-                    component.localEulerAngles = axis.GetValue() * value;
+                    component.localRotation = Quaternion.Euler(axis.GetValue() * value);
                 else if(space == TweenSpace.WORLD)
-                    component.eulerAngles = axis.GetValue() * value;
+                    component.rotation = Quaternion.Euler(axis.GetValue() * value);
             }
         }
     }

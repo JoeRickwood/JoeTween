@@ -19,8 +19,22 @@ namespace JoeTween
             endRotation.value = _endRotation;
         }
 
+        public override void CloneModifiers()
+        {
+            if (startRotation.valueModifier != null)
+                startRotation.valueModifier = startRotation.valueModifier.Clone<Vector3>();
+
+            if (endRotation.valueModifier != null)
+                endRotation.valueModifier = endRotation.valueModifier.Clone<Vector3>();
+
+            base.CloneModifiers();
+        }
+
         public override void StartAction()
         {
+            startRotation.OnActionStart(target);
+            endRotation.OnActionStart(target);
+
             switch (space)
             {
                 default: case TweenSpace.LOCAL: component.localEulerAngles = startRotation; break;
@@ -49,9 +63,9 @@ namespace JoeTween
             if (playing)
             {
                 if (space == TweenSpace.LOCAL)
-                    component.localEulerAngles = Vector3.LerpUnclamped(startRotation, endRotation, GetTweenProgress(_time));
+                    component.localRotation = Quaternion.SlerpUnclamped(Quaternion.Euler(startRotation), Quaternion.Euler(endRotation), GetTweenProgress(_time));
                 else if (space == TweenSpace.WORLD)
-                    component.eulerAngles = Vector3.LerpUnclamped(startRotation, endRotation, GetTweenProgress(_time));
+                    component.rotation = Quaternion.SlerpUnclamped(Quaternion.Euler(startRotation), Quaternion.Euler(endRotation), GetTweenProgress(_time));
             }
         }
     }

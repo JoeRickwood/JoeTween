@@ -23,7 +23,27 @@ namespace JoeTween
         {
             startColor.value = component.color;
 
+            startColor.OnActionStart(target);
+            opacity.OnActionStart(target);
+            startColor.OnActionStart(target);
+
             base.StartAction();
+        }
+
+
+        public override void CloneModifiers()
+        {
+            if (colorChange.valueModifier != null)
+                colorChange.valueModifier = colorChange.valueModifier.Clone<Color>();
+
+            if (opacity.valueModifier != null)
+                opacity.valueModifier = opacity.valueModifier.Clone<float>();
+
+            if (startColor.valueModifier != null)
+                startColor.valueModifier = startColor.valueModifier.Clone<Color>();
+
+
+            base.CloneModifiers();
         }
 
         public override void EndAction()

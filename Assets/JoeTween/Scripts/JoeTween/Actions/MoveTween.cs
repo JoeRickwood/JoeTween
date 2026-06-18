@@ -32,6 +32,9 @@ namespace JoeTween
 
         public override void StartAction()
         {
+            startPos.OnActionStart(target);
+            endPos.OnActionStart(target);
+
             switch (space)
             {
                 default: case TweenSpace.LOCAL: component.localPosition = startPos; break;

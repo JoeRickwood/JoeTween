@@ -37,8 +37,6 @@ namespace JoeTween
 
             for (int i = 0; i < actions.Length; i++)
             {
-                Debug.Log(actions[i]);
-
                 if (actions[i] == null)
                     continue;
 
