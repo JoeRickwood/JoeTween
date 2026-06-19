@@ -18,12 +18,10 @@ namespace JoeTween
             endScale.value = _endScale;
         }
 
-        public override void StartAction()
+        internal override void StartAction()
         {
             startScale.OnActionStart(target);
             endScale.OnActionStart(target);
-
-            //component.localScale = startScale;
 
             base.StartAction();
         }
@@ -39,10 +37,8 @@ namespace JoeTween
             base.CloneModifiers();
         }
 
-        public override void EndAction()
+        protected override void EndAction()
         {
-            //component.localScale = endScale;
-
             base.EndAction();
         }
 

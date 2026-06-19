@@ -176,14 +176,14 @@ namespace JoeTween
             return value;
         }
 
-        public virtual void StartAction()
+        internal virtual void StartAction()
         {
             playing = true;
 
             animationLength.OnActionStart(target);
         }
 
-        public void SetPaused(bool _pauseState) 
+        protected void SetPaused(bool _pauseState) 
         {
             playing = !_pauseState;
         }
@@ -193,11 +193,15 @@ namespace JoeTween
             return !playing;
         }
 
-        public virtual void EndAction()
+        /// <summary>
+        /// Ends The Action After 
+        /// </summary>
+        protected virtual void EndAction()
         {
             ended = true;
             playing = false;
 
+            //Starts Each Action After This One Ends
             if (sequenced != null)
             {
                 foreach (var t in sequenced)
@@ -207,9 +211,19 @@ namespace JoeTween
             }
         }
 
+
+        /// <summary>
+        /// Stops The Action And All Sequenced Actions
+        /// </summary>
         internal void StopAction()
         {
-            
+            if (sequenced != null)
+            {
+                foreach (var t in sequenced)
+                {
+                    t.StopAction();
+                }
+            }
         }
 
         internal float GetTweenProgress(float _time)

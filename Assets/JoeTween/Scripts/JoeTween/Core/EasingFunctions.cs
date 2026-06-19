@@ -1,3 +1,14 @@
+/***********************************************************************
+    Auckland
+    New Zealand
+
+    (c) 2026 Joe Rickwood
+
+    File Name   :   EasingFunctions.cs
+    Description :   Useful Creation Of Basic Easing Functions For Users To Use With JoeTween
+    Author      :   Joe Rickwood
+**************************************************************************/
+
 using UnityEngine;
 
 namespace JoeTween

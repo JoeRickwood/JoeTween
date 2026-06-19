@@ -1,3 +1,16 @@
+/***********************************************************************
+    Auckland
+    New Zealand
+
+    (c) 2026 Joe Rickwood
+
+    File Name   :   JoeTween.cs
+    Description :   Injection-Point For JoeTween Into A Regular Project, Allowing A User
+                    To Start Tweens On GameObjects Using The Static TweenManager Static Class
+    Author      :   Joe Rickwood
+**************************************************************************/
+
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +31,10 @@ namespace JoeTween
         private static GameObject dummy;
         private static Queue<Tween> cleanup;
 
+        /// <summary>
+        /// Initializes The Tween Manager
+        /// Dosent Need To Be Called By Any External Scripts, Tween Manager Will Handle All Calls 
+        /// </summary>
         private static void Initialize()
         {
             if (Initialized && dummy != null)
@@ -36,7 +53,13 @@ namespace JoeTween
             GameObject.DontDestroyOnLoad(dummy);
         }
 
-        public static void StartTween(GameObject _target, TweenRuntimeGraph _tween)
+        /// <summary>
+        /// Main StartTween Function, Allows For A TweenRuntimeGraph To Be Instanced 
+        /// And Played On A Input GameObject _target
+        /// </summary>
+        /// <param name="_target">Target To Apply The Tween Instance To</param>
+        /// <param name="_tween">Selected Tween To Apply To The Target</param>
+        public static Tween StartTween(GameObject _target, TweenRuntimeGraph _tween)
         {
             if (!Initialized || dummy == null)
                 Initialize();
@@ -54,10 +77,16 @@ namespace JoeTween
             activeTweenSequences[target].Add(tween);
 
             tween.Play();
+            return tween;
         }
 
-
-        public static void StartTween(TweenAction _tweenAction)
+        /// <summary>
+        /// Used For More Manual Creation Of The Tween On A Object
+        /// Tween Action Should Be Created Before-Hand And Target Updated Pre-Emptively
+        /// Good For Storing Custom, Procedurally Generated Tweens Then Applying
+        /// </summary>
+        /// <param name="_tweenAction">Tween Action Sequence To Run</param>
+        public static Tween StartTween(TweenAction _tweenAction)
         {
             if(!Initialized)
                 Initialize();
@@ -73,8 +102,40 @@ namespace JoeTween
 
 
             tween.Play();
+            return tween;
         }
 
+        /// <summary>
+        /// Stops A Tween Currently Running, Tween Can Be Cached When Calling StartTween()
+        /// </summary>
+        /// <param name="_tween"> Tween To Execute The Stop Funtion </param>
+        public static void StopTween(Tween _tween)
+        {
+            if (!Initialized)
+                Initialize();
+
+            //List Of Sequences On A GameObject
+
+            if (!activeTweenSequences.ContainsKey(_tween.action.GetTarget()))
+                return;
+
+            foreach (var item in activeTweenSequences[_tween.action.GetTarget()])
+            {
+                if (item != _tween)
+                    continue;
+
+                item.Stop();
+                cleanup.Enqueue(item);
+
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Stops A Tween Currently Running, This Function Is Usually 
+        /// Used Internally However Has Function Outside Of Internal Use
+        /// </summary>
+        /// <param name="_tween"></param>
         public static void StopTween(TweenAction _tween)
         {
             if (!Initialized)
@@ -97,6 +158,10 @@ namespace JoeTween
             }
         }
 
+        /// <summary>
+        /// Runs The Update Function On All Active Tween Sequences
+        /// Used Internally By The Tween Updater
+        /// </summary>
         internal static void UpdateTweens()
         {
             foreach(List<Tween> tweenList in activeTweenSequences.Values)

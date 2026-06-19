@@ -19,7 +19,7 @@ namespace JoeTween
             opacity.value = _opacity; 
         }
 
-        public override void StartAction()
+        internal override void StartAction()
         {
             startColor.value = component.color;
 
@@ -46,7 +46,7 @@ namespace JoeTween
             base.CloneModifiers();
         }
 
-        public override void EndAction()
+        protected override void EndAction()
         {
             base.EndAction();
         }
@@ -79,14 +79,14 @@ namespace JoeTween
             opacity.value = _opacity;
         }
 
-        public override void StartAction()
+        internal override void StartAction()
         {
             startColor.value = component.color;
 
             base.StartAction();
         }
 
-        public override void EndAction()
+        protected override void EndAction()
         {
             base.EndAction();
         }

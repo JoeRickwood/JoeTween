@@ -30,7 +30,7 @@ namespace JoeTween
             base.CloneModifiers();
         }
 
-        public override void StartAction()
+        internal override void StartAction()
         {
             startRotation.OnActionStart(target);
             endRotation.OnActionStart(target);
@@ -44,7 +44,7 @@ namespace JoeTween
             base.StartAction();
         }
 
-        public override void EndAction()
+        protected override void EndAction()
         {
             switch (space)
             {

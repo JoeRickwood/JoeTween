@@ -21,7 +21,7 @@ namespace JoeTween
             amplitude.value = _ampltidude;
         }
 
-        public override void StartAction()
+        internal override void StartAction()
         {
             axis.OnActionStart(target);
             frequency.OnActionStart(target);
@@ -42,11 +42,6 @@ namespace JoeTween
                 amplitude.valueModifier = amplitude.valueModifier.Clone<float>();
 
             base.CloneModifiers();
-        }
-
-        public override void EndAction()
-        {
-            base.EndAction();
         }
 
         public override void Update(float _time)

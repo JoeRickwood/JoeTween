@@ -30,7 +30,7 @@ namespace JoeTween
                 endPos.valueModifier = endPos.valueModifier.Clone<Vector3>();
         }
 
-        public override void StartAction()
+        internal override void StartAction()
         {
             startPos.OnActionStart(target);
             endPos.OnActionStart(target);
@@ -44,7 +44,7 @@ namespace JoeTween
             base.StartAction();
         }
 
-        public override void EndAction()
+        protected override void EndAction()
         {
             switch (space)
             {
