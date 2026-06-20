@@ -3,11 +3,14 @@ using UnityEngine;
 
 namespace JoeTween
 {
+    /// <summary>
+    /// Adds Two Vectors Together And Sets The Alter Value To The Result
+    /// </summary>
     [Serializable]
     public class VectorAddTweenModifier : TweenActionValueModifier<Vector3>
     {
-        public TweenValue<Vector3> a;
-        public TweenValue<Vector3> b;
+        public TweenValue<Vector3> a; //First Vector To Add
+        public TweenValue<Vector3> b; //Second Vector To Add
 
         public VectorAddTweenModifier(TweenValue<Vector3> _a, TweenValue<Vector3> _b)
         {

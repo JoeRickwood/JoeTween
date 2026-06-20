@@ -1,8 +1,24 @@
+/***********************************************************************
+    Auckland
+    New Zealand
+
+    (c) 2026 Joe Rickwood
+
+    File Name   :   ChangeColorTween.cs
+    Description :   Tweens That Make Use Of Color Changing On Both UI + Sprites
+    Author      :   Joe Rickwood
+**************************************************************************/
+
+
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace JoeTween
 {
+
+    /// <summary>
+    /// Should Be Used On Sprite Objects
+    /// </summary>
     [System.Serializable]
     public class ChangeSpriteColorTween : TweenAction<SpriteRenderer>
     {
@@ -21,7 +37,8 @@ namespace JoeTween
 
         internal override void StartAction()
         {
-            startColor.value = component.color;
+            if(component != null)
+                startColor.value = component.color;
 
             startColor.OnActionStart(target);
             opacity.OnActionStart(target);
@@ -56,13 +73,16 @@ namespace JoeTween
         {
             base.Update(_time);
 
-            if (playing)
+            if (playing && component != null)
             {
                 component.color = Color.LerpUnclamped(startColor, colorChange, GetTweenProgress(_time) * opacity);
             }
         }
     }
 
+    /// <summary>
+    /// Should Be Used On Any UI Objects Utilising The Graphic Component Including Text, Images, Raw Images Ect
+    /// </summary>
     [System.Serializable]
     public class ChangeUIColorTween : TweenAction<Graphic>
     {
@@ -81,7 +101,8 @@ namespace JoeTween
 
         internal override void StartAction()
         {
-            startColor.value = component.color;
+            if (component != null)
+                startColor.value = component.color;
 
             base.StartAction();
         }
@@ -96,7 +117,7 @@ namespace JoeTween
         {
             base.Update(_time);
 
-            if (playing)
+            if (playing && component != null)
             {
                 component.color = Color.LerpUnclamped(startColor, colorChange, GetTweenProgress(_time) * opacity);
             }

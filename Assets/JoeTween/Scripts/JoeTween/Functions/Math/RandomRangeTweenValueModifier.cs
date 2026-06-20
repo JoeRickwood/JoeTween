@@ -3,13 +3,16 @@ using UnityEngine;
 
 namespace JoeTween
 {
+    /// <summary>
+    /// Float Modifier to take the random between two range values and sets the result to the out value
+    /// </summary>
     [Serializable]
     public class RandomRangeTweenModifier : TweenActionValueModifier<float>
     {
-        public TweenValue<float> min;
-        public TweenValue<float> max;
+        public TweenValue<float> min; //minimum range value
+        public TweenValue<float> max; //maximum range value
 
-        private float random;
+        private float random; //cached random
 
         public RandomRangeTweenModifier(TweenValue<float> _min, TweenValue<float> _max)
         {
@@ -22,6 +25,7 @@ namespace JoeTween
             min.valueModifier?.OnActionStart(_componentHolder);
             max.valueModifier?.OnActionStart(_componentHolder);
 
+            //caches random for use throughout the action
             random = UnityEngine.Random.Range(min.GetValue(), max.GetValue());
         }
 

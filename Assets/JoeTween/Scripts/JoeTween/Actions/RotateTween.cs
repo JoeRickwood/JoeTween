@@ -35,10 +35,13 @@ namespace JoeTween
             startRotation.OnActionStart(target);
             endRotation.OnActionStart(target);
 
-            switch (space)
+            if(component != null)
             {
-                default: case TweenSpace.LOCAL: component.localEulerAngles = startRotation; break;
-                case TweenSpace.WORLD: component.eulerAngles = startRotation; break;
+                switch (space)
+                {
+                    default: case TweenSpace.LOCAL: component.localEulerAngles = startRotation; break;
+                    case TweenSpace.WORLD: component.eulerAngles = startRotation; break;
+                }
             }
 
             base.StartAction();
@@ -46,10 +49,13 @@ namespace JoeTween
 
         protected override void EndAction()
         {
-            switch (space)
+            if (component != null)
             {
-                default: case TweenSpace.LOCAL: component.localEulerAngles = endRotation; break;
-                case TweenSpace.WORLD: component.eulerAngles = endRotation; break;
+                switch (space)
+                {
+                    default: case TweenSpace.LOCAL: component.localEulerAngles = endRotation; break;
+                    case TweenSpace.WORLD: component.eulerAngles = endRotation; break;
+                }
             }
 
             base.EndAction();
@@ -60,7 +66,7 @@ namespace JoeTween
         {
             base.Update(_time);
 
-            if (playing)
+            if (playing & component != null)
             {
                 if (space == TweenSpace.LOCAL)
                     component.localRotation = Quaternion.SlerpUnclamped(Quaternion.Euler(startRotation), Quaternion.Euler(endRotation), GetTweenProgress(_time));

@@ -47,7 +47,7 @@ namespace JoeTween
         {
             base.Update(_time);
 
-            if (playing)
+            if (playing && component != null)
             {
                 component.localScale = Vector3.LerpUnclamped(startScale, endScale, GetTweenProgress(_time));
             }

@@ -44,7 +44,7 @@ namespace JoeTween
             switch (startNodes.Count)
             {
                 case 0:
-                    infos.LogError("Add a StartNode in your Visual Novel graph.", this);
+                    infos.LogError("Add a StartNode in your Tween Sequence Graph.", this);
                     break;
                 case >= 1:
                     {

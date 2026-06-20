@@ -48,7 +48,7 @@ namespace JoeTween
         {
             base.Update(_time);
 
-            if (playing)
+            if (playing && component != null)
             {
                 float value = Mathf.Sin(_time * frequency) * amplitude;
 

@@ -1,8 +1,23 @@
+/***********************************************************************
+    Auckland
+    New Zealand
+
+    (c) 2026 Joe Rickwood
+
+    File Name   :   MoveTween.cs
+    Description :   Tweens That Move An Object From A Start Position To An End Position Over Time
+    Author      :   Joe Rickwood
+**************************************************************************/
+
+
 using System;
 using UnityEngine;
 
 namespace JoeTween
 {
+    /// <summary>
+    /// Moved A Target Transform Component Over Two Position Vectors
+    /// </summary>
     [System.Serializable]
     public class MoveTween : TweenAction<Transform>
     {
@@ -35,10 +50,13 @@ namespace JoeTween
             startPos.OnActionStart(target);
             endPos.OnActionStart(target);
 
-            switch (space)
+            if(component != null)
             {
-                default: case TweenSpace.LOCAL: component.localPosition = startPos; break;
-                case TweenSpace.WORLD: component.position = startPos; break;
+                switch (space)
+                {
+                    default: case TweenSpace.LOCAL: component.localPosition = startPos; break;
+                    case TweenSpace.WORLD: component.position = startPos; break;
+                }
             }
 
             base.StartAction();
@@ -46,10 +64,13 @@ namespace JoeTween
 
         protected override void EndAction()
         {
-            switch (space)
+            if (component != null)
             {
-                default: case TweenSpace.LOCAL: component.localPosition = endPos; break;
-                case TweenSpace.WORLD: component.position = endPos; ; break;
+                switch (space)
+                {
+                    default: case TweenSpace.LOCAL: component.localPosition = endPos; break;
+                    case TweenSpace.WORLD: component.position = endPos; ; break;
+                }
             }
 
             base.EndAction();
@@ -60,7 +81,7 @@ namespace JoeTween
         {
             base.Update(_time);
 
-            if (playing)
+            if (playing && component != null)
             {
                 if (space == TweenSpace.LOCAL)
                     component.localPosition = Vector3.LerpUnclamped(startPos, endPos, GetTweenProgress(_time));
