@@ -6,6 +6,7 @@ namespace JoeTween
     [System.Serializable]
     public class RotateSinTween : TweenAction<Transform>
     {
+        public TweenValue<Vector3> startRotation;
         public TweenValue<Vector3> axis;
         public TweenValue<float> frequency;
         public TweenValue<float> amplitude;
@@ -13,16 +14,18 @@ namespace JoeTween
 
         public RotateSinTween(
             AnimationCurve _animationCurve, float _animationLength, bool _looping,
-            Transform _component, Vector3 _rotationAxis, float _frequency, float _ampltidude
+            Transform _component, Vector3 _rotationAxis, Vector3 _startRotation, float _frequency, float _ampltidude
         ) : base(_animationCurve, _animationLength,_component, _looping)
         {
             axis.value = _rotationAxis;
+            startRotation.value = _startRotation;
             frequency.value = _frequency;
             amplitude.value = _ampltidude;
         }
 
         internal override void StartAction()
         {
+            startRotation.OnActionStart(target);
             axis.OnActionStart(target);
             frequency.OnActionStart(target);
             amplitude.OnActionStart(target);
@@ -53,9 +56,9 @@ namespace JoeTween
                 float value = Mathf.Sin(_time * frequency) * amplitude;
 
                 if(space == TweenSpace.LOCAL)
-                    component.localRotation = Quaternion.Euler(axis.GetValue() * value);
+                    component.localRotation =  Quaternion.Euler(startRotation + (axis.GetValue() * value));
                 else if(space == TweenSpace.WORLD)
-                    component.rotation = Quaternion.Euler(axis.GetValue() * value);
+                    component.rotation = Quaternion.Euler(startRotation + (axis.GetValue() * value));
             }
         }
     }

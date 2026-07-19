@@ -7,6 +7,7 @@ namespace JoeTween
     [Serializable]
     class RotateSinActionNode : TweenActionNode<UnityEngine.Transform>
     {
+        public Vector3 startRotation;
         public Vector3 axis;
         public float frequency;
         public float amplitude;
@@ -16,7 +17,9 @@ namespace JoeTween
         {
             base.OnDefinePorts(context);
 
+            context.AddInputPort<Vector3>("Start Rotation").Build();
             context.AddInputPort<Vector3>("Rotation Axis").Build();
+
             context.AddInputPort<float>("Frequency").Build();
             context.AddInputPort<float>("Amplitude").Build();
 
@@ -30,10 +33,10 @@ namespace JoeTween
             RotateSinTween tween = new RotateSinTween
             (
                 animationCurve, tweenLength, false,
-                null, axis, frequency, amplitude
+                null, axis, startRotation, frequency, amplitude
             );
 
-
+            TweenSequenceNodeExtensions.LoadMod(ref tween.startRotation, GetInputPortByName("Start Rotation"));
             TweenSequenceNodeExtensions.LoadMod(ref tween.axis, GetInputPortByName("Rotation Axis"));
             TweenSequenceNodeExtensions.LoadMod(ref tween.frequency, GetInputPortByName("Frequency"));
             TweenSequenceNodeExtensions.LoadMod(ref tween.amplitude, GetInputPortByName("Amplitude"));
@@ -47,6 +50,7 @@ namespace JoeTween
         {
             base.LoadValues();
 
+            GetInputPortByName("Start Rotation").TryGetValue(out startRotation);
             GetInputPortByName("Rotation Axis").TryGetValue(out axis);
             GetInputPortByName("Frequency").TryGetValue(out frequency);
             GetInputPortByName("Amplitude").TryGetValue(out amplitude);

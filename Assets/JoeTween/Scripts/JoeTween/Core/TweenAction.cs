@@ -153,9 +153,6 @@ namespace JoeTween
             {
                 t.Update(_time - animationLength);
             }      
-
-            if (IsFinished())
-                TweenManager.StopTween(this);
         }
 
         //Has This Action Finished
@@ -242,7 +239,8 @@ namespace JoeTween
         [SerializeReference]
         public T component;
 
-        public TweenAction(AnimationCurve _animationCurve, float _animationLength, T _component, bool _looping) : base(_animationCurve, _animationLength, _looping)
+        public TweenAction(AnimationCurve _animationCurve, float _animationLength, T _component, bool _looping) 
+            : base(_animationCurve, _animationLength, _looping)
         {
             component = _component;
         }
