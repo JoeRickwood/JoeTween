@@ -64,9 +64,11 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && component != null)
             {
-                Vector3 scale = startScale + axis.GetValue() * Mathf.Sin(_time * speed) * amplitude;
+                Vector3 scale = startScale.GetValue(tweenTime) + axis.GetValue(tweenTime) * Mathf.Sin(_time * speed.GetValue(tweenTime)) * amplitude.GetValue(tweenTime);
 
                 component.localScale = scale;
             }

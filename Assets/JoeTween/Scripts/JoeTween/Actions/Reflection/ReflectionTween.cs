@@ -38,6 +38,14 @@ namespace JoeTween
             end.value = _end;
         }
 
+        public override void CloneModifiers()
+        {
+            base.CloneModifiers();
+
+            start.valueModifier = start.valueModifier.Clone<T>();
+            end.valueModifier = end.valueModifier.Clone<T>();
+        }
+
         public override void UpdateTargetRecursive(GameObject _target)
         {
             base.UpdateTargetRecursive(_target);

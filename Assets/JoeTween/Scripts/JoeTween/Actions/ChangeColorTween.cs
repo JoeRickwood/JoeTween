@@ -73,9 +73,11 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && component != null)
             {
-                component.color = Color.LerpUnclamped(startColor, colorChange, GetTweenProgress(_time) * opacity);
+                component.color = Color.LerpUnclamped(startColor.GetValue(tweenTime), colorChange.GetValue(tweenTime), tweenTime * opacity.GetValue(tweenTime));
             }
         }
     }
@@ -117,9 +119,11 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && component != null)
             {
-                component.color = Color.LerpUnclamped(startColor, colorChange, GetTweenProgress(_time) * opacity);
+                component.color = Color.LerpUnclamped(startColor.GetValue(tweenTime), colorChange.GetValue(tweenTime), tweenTime * opacity.GetValue(tweenTime));
             }
         }
     }

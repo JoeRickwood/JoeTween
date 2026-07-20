@@ -30,7 +30,7 @@ namespace JoeTween
 
     public abstract class JoeTweenFunctionNode<T> : JoeTweenFunctionNode
     {
-        public TweenActionValueModifier<T> GetModFromPort(IPort _port) 
+        public TweenActionValueModifier<T> GetModFromPort<T>(IPort _port) 
         {
             TweenActionValueModifier<T> nodeMod = null;
             List<IPort> connectedPorts = new List<IPort>();

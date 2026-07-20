@@ -26,9 +26,11 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && propertyInfo != null)
             {
-                propertyInfo.SetValue(memberHolder, Color.Lerp(start, end, _time));
+                propertyInfo.SetValue(memberHolder, Color.Lerp(start.GetValue(tweenTime), end.GetValue(tweenTime), tweenTime));
             }
         }
     }

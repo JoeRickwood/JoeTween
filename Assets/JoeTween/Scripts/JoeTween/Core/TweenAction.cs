@@ -34,14 +34,14 @@ namespace JoeTween
         }
 
         //Gets The True Value Of This TweenValue
-        public T GetValue()
+        public T GetValue(float _tweenTime)
         {
             //Create Tmp Variation Of Value
             T tmp = value;
 
             //If Modifier Exists, Update The Value To Be The Modifiers One Instead
             if(valueModifier != null)
-                valueModifier.AlterValue(out tmp);
+                valueModifier.AlterValue(ref tmp, _tweenTime);
 
             return tmp;
         }
@@ -54,12 +54,6 @@ namespace JoeTween
         {
             if (valueModifier != null)
                 valueModifier.OnActionStart(_obj);
-        }
-
-        //Means We Can Implicitly Cast A TweenValue To Type T 
-        public static implicit operator T(TweenValue<T> tweenValue)
-        {
-            return tweenValue.GetValue();
         }
     }
 
@@ -140,7 +134,9 @@ namespace JoeTween
         //This Base Function Should Be Called On Derived Actions Implementing Logic
         public virtual void Update(float _time)
         {
-            if (_time <= animationLength || looping)
+            float tweenTime = GetTweenProgress(_time);
+
+            if (_time <= animationLength.GetValue(tweenTime) || looping)
                 return;
 
             //Logic For If The Timer Is Currently AFTER The Animaton Is Finished
@@ -151,7 +147,7 @@ namespace JoeTween
 
             foreach (var t in sequenced)
             {
-                t.Update(_time - animationLength);
+                t.Update(_time - animationLength.GetValue(tweenTime));
             }      
         }
 
@@ -225,7 +221,7 @@ namespace JoeTween
 
         internal float GetTweenProgress(float _time)
         {
-            return tweenCurve.Evaluate(_time / animationLength);
+            return tweenCurve.Evaluate(_time / animationLength.value);
         }
     }
 

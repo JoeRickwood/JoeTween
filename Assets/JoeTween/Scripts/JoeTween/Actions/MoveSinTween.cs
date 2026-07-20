@@ -62,8 +62,8 @@ namespace JoeTween
             {
                 switch (space)
                 {
-                    default: case TweenSpace.LOCAL: component.localPosition = startPos; break;
-                    case TweenSpace.WORLD: component.position = startPos; break;
+                    default: case TweenSpace.LOCAL: component.localPosition = startPos.GetValue(0f); break;
+                    case TweenSpace.WORLD: component.position = startPos.GetValue(0f); break;
                 }
             }
 
@@ -74,9 +74,11 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && component != null)
             {
-                Vector3 position = axis.GetValue() * Mathf.Sin(_time * speed) * amplitude;
+                Vector3 position = axis.GetValue(tweenTime) * Mathf.Sin(_time * speed.GetValue(tweenTime)) * amplitude.GetValue(tweenTime);
 
                 if (space == TweenSpace.LOCAL)
                     component.localPosition = position;

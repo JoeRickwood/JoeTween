@@ -27,7 +27,7 @@ namespace JoeTween
         }
 
         //Returns cached value
-        public override void AlterValue(out Vector3 _value)
+        public override void AlterValue(ref Vector3 _value, float _tweenTime)
         {
             _value = cachedScale;
         }

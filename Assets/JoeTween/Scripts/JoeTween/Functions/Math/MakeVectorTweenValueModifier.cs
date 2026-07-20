@@ -38,13 +38,13 @@ namespace JoeTween
             return base.Clone<T>();
         }
 
-        public override void AlterValue(out Vector3 _value)
+        public override void AlterValue(ref Vector3 _value, float _tweenTime)
         {
             float valX, valY, valZ;
 
-            valX = x.GetValue();
-            valY = y.GetValue();
-            valZ = z.GetValue();
+            valX = x.GetValue(_tweenTime);
+            valY = y.GetValue(_tweenTime);
+            valZ = z.GetValue(_tweenTime);
 
             _value = new Vector3(valX, valY, valZ);
         }

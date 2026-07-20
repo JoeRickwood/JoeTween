@@ -26,7 +26,7 @@ namespace JoeTween
             max.valueModifier?.OnActionStart(_componentHolder);
 
             //caches random for use throughout the action
-            random = UnityEngine.Random.Range(min.GetValue(), max.GetValue());
+            random = UnityEngine.Random.Range(min.GetValue(0f), max.GetValue(0f));
         }
 
         public override TweenActionValueModifier<T> Clone<T>()
@@ -40,7 +40,7 @@ namespace JoeTween
             return base.Clone<T>();
         }
 
-        public override void AlterValue(out float _value)
+        public override void AlterValue(ref float _value, float _tweenTime)
         {
             _value = random;
         }

@@ -41,6 +41,6 @@ namespace JoeTween
     public abstract class TweenActionValueModifier<T> : TweenActionValueModifier
     {
         public abstract void OnActionStart(GameObject _componentHolder);
-        public abstract void AlterValue(out T _value);
+        public abstract void AlterValue(ref T _value, float _tweenTime);
     }
 }

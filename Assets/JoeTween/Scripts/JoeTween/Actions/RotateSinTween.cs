@@ -51,14 +51,16 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && component != null)
             {
-                float value = Mathf.Sin(_time * frequency) * amplitude;
+                float value = Mathf.Sin(_time * frequency.GetValue(tweenTime)) * amplitude.GetValue(tweenTime);
 
                 if(space == TweenSpace.LOCAL)
-                    component.localRotation =  Quaternion.Euler(startRotation + (axis.GetValue() * value));
+                    component.localRotation =  Quaternion.Euler(startRotation.GetValue(tweenTime) + (axis.GetValue(tweenTime) * value));
                 else if(space == TweenSpace.WORLD)
-                    component.rotation = Quaternion.Euler(startRotation + (axis.GetValue() * value));
+                    component.rotation = Quaternion.Euler(startRotation.GetValue(tweenTime) + (axis.GetValue(tweenTime) * value));
             }
         }
     }

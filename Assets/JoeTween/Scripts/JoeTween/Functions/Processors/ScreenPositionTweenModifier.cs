@@ -24,7 +24,7 @@ namespace JoeTween
             
         }
 
-        public override void AlterValue(out Vector3 _value)
+        public override void AlterValue(ref Vector3 _value, float _tweenTime)
         {
             //Gets Screen Width And Screen Height And Multiplies By The Anchors
             _value = new Vector3(Screen.width * anchor.x, Screen.height * anchor.y, 0);

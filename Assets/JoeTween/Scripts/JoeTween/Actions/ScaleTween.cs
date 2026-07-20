@@ -47,9 +47,11 @@ namespace JoeTween
         {
             base.Update(_time);
 
+            float tweenTime = GetTweenProgress(_time);
+
             if (playing && component != null)
             {
-                component.localScale = Vector3.LerpUnclamped(startScale, endScale, GetTweenProgress(_time));
+                component.localScale = Vector3.LerpUnclamped(startScale.GetValue(tweenTime), endScale.GetValue(tweenTime), tweenTime);
             }
         }
     }
