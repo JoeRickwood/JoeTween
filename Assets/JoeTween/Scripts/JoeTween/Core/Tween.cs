@@ -17,7 +17,7 @@ namespace JoeTween
     public sealed class Tween
     {
         public string name;
-        public TweenAction action;
+        public TweenAction action; //Root Action Of Tween
         private float tweenTime;
         public GameObject target;
         public bool isPaused;

@@ -68,9 +68,9 @@ MonoBehaviour:
         m_LocalSubgraphs: []
         m_LastKnownBounds:
           serializedVersion: 2
-          x: -1614
+          x: -1782
           y: -321
-          width: 1499
+          width: 1667
           height: 1060
         m_GraphElementMetaData:
         - m_Guid:
@@ -342,7 +342,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: ed021b466038adfe946e95acef85d9b0
         m_Version: 2
-        m_Position: {x: -1219.1437, y: 159.76662}
+        m_Position: {x: -1368.3778, y: 156.32477}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -708,7 +708,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: d76cfec0799d322a468a791c3ef10a8e
         m_Version: 2
-        m_Position: {x: -1362.9498, y: -308.5255}
+        m_Position: {x: -1533.5189, y: -292.765}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -1011,7 +1011,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 1cb752bda2fcbb6c38f00b11d699bd2f
         m_Version: 2
-        m_Position: {x: -1614.4021, y: -201.40955}
+        m_Position: {x: -1782.1124, y: -182.21849}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -1060,7 +1060,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 4c84a4ebe84b6a4aa0d7db5628b508bc
         m_Version: 2
-        m_Position: {x: -1266.6166, y: -204.16882}
+        m_Position: {x: -1434.3269, y: -184.97777}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -1179,7 +1179,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 4dab7de6b2e66223c49406ab87dee5a2
         m_Version: 2
-        m_Position: {x: -501.01083, y: 395.60086}
+        m_Position: {x: -499.48996, y: 395.60086}
         m_Title: ScaleActionNode
         m_Tooltip: 
         m_NodePreviewModel:
@@ -1339,7 +1339,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 006a605db606b63526e25c1e7a011d37
         m_Version: 2
-        m_Position: {x: -861.8164, y: 110.37509}
+        m_Position: {x: -853.88336, y: 85.45513}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -1462,7 +1462,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 4b044e65591f66273b927f4531d6c3fb
         m_Version: 2
-        m_Position: {x: -510.17218, y: 106.97737}
+        m_Position: {x: -502.23907, y: 82.05741}
         m_Title: ChangeUIColorActionNode
         m_Tooltip: 
         m_NodePreviewModel:
