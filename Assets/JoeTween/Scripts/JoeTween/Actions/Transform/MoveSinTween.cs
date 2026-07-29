@@ -81,9 +81,9 @@ namespace JoeTween
                 Vector3 position = axis.GetValue(tweenTime) * Mathf.Sin(_time * speed.GetValue(tweenTime)) * amplitude.GetValue(tweenTime);
 
                 if (space == TweenSpace.LOCAL)
-                    component.localPosition = position;
+                    component.localPosition = startPos.GetValue(tweenTime) + position;
                 else if (space == TweenSpace.WORLD)
-                    component.position = position;
+                    component.position = startPos.GetValue(tweenTime) + position;
             }
         }
     }

@@ -164,10 +164,19 @@ namespace JoeTween
         /// </summary>
         internal static void UpdateTweens()
         {
+            if (activeTweenSequences == null)
+                return;
+
             foreach(List<Tween> tweenList in activeTweenSequences.Values)
             {
+                if (tweenList == null)
+                    continue;
+
                 foreach (Tween tween in tweenList)
                 {
+                    if (tween == null)
+                        continue;
+
                     tween.Update();
                 }
             }

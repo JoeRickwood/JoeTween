@@ -10,6 +10,10 @@ namespace JoeTween
         public TweenValue<Vector3> endRotation;
         public TweenSpace space;
 
+        private Quaternion startRotQuat;
+        private Quaternion endRotQuat;
+
+
         public RotateTween(
             AnimationCurve _animationCurve, float _animationLength, bool _looping,
             Transform _component, Vector3 _startRotation, Vector3 _endRotation
@@ -37,10 +41,16 @@ namespace JoeTween
 
             if(component != null)
             {
+                startRotQuat = Quaternion.Euler(startRotation.GetValue(0f));
+                endRotQuat = Quaternion.Euler(endRotation.GetValue(1f));
+
+                Debug.Log(startRotQuat.eulerAngles);
+
+
                 switch (space)
                 {
-                    default: case TweenSpace.LOCAL: component.localEulerAngles = startRotation.GetValue(0f); break;
-                    case TweenSpace.WORLD: component.eulerAngles = startRotation.GetValue(0f); break;
+                    default: case TweenSpace.LOCAL: component.localRotation = startRotQuat; break;
+                    case TweenSpace.WORLD: component.rotation = startRotQuat; break;
                 }
             }
 
@@ -53,8 +63,8 @@ namespace JoeTween
             {
                 switch (space)
                 {
-                    default: case TweenSpace.LOCAL: component.localEulerAngles = endRotation.GetValue(1f); break;
-                    case TweenSpace.WORLD: component.eulerAngles = endRotation.GetValue(1f); break;
+                    default: case TweenSpace.LOCAL: component.localRotation = endRotQuat; break;
+                    case TweenSpace.WORLD: component.rotation = endRotQuat; break;
                 }
             }
 
@@ -71,9 +81,9 @@ namespace JoeTween
             if (playing & component != null)
             {
                 if (space == TweenSpace.LOCAL)
-                    component.localRotation = Quaternion.SlerpUnclamped(Quaternion.Euler(startRotation.GetValue(tweenTime)), Quaternion.Euler(endRotation.GetValue(tweenTime)), tweenTime);
+                    component.localRotation = Quaternion.SlerpUnclamped(startRotQuat, endRotQuat, tweenTime);
                 else if (space == TweenSpace.WORLD)
-                    component.rotation = Quaternion.SlerpUnclamped(Quaternion.Euler(startRotation.GetValue(tweenTime)), Quaternion.Euler(endRotation.GetValue(tweenTime)), tweenTime);
+                    component.rotation = Quaternion.SlerpUnclamped(startRotQuat, endRotQuat, tweenTime);
             }
         }
     }
