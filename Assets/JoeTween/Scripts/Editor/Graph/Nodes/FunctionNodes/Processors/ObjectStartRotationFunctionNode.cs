@@ -22,7 +22,7 @@ namespace JoeTween
             return new ObjectStartRotationTweenModifier(space);
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             LoadValueFromPort(GetInputPortByName("Tween Space"), out space);
         }

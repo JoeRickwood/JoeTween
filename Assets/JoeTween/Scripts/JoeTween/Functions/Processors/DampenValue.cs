@@ -21,9 +21,6 @@ namespace JoeTween
         //Returns cached position
         public override void AlterValue(ref float _value, float _tweenTime)
         {
-            Debug.Log(baseValue);
-            Debug.Log(dampenCurve.Evaluate(_tweenTime));
-
             _value = baseValue * dampenCurve.Evaluate(_tweenTime);
         }
 

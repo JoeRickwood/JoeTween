@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace JoeTween
 {
@@ -10,7 +11,6 @@ namespace JoeTween
     {
         private void Update()
         {
- 
             TweenManager.UpdateTweens();
         }
     }

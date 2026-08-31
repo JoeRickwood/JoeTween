@@ -22,7 +22,7 @@ namespace JoeTween
             return new ScreenPositionTweenModifier(anchor);
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             LoadValueFromPort(GetInputPortByName("Screen Anchor"), out anchor);
         }

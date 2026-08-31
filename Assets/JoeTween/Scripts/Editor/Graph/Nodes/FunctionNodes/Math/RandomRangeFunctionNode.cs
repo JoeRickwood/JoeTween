@@ -27,7 +27,7 @@ namespace JoeTween
             return mod;
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             min = new TweenValue<float>();
             TweenSequenceNodeExtensions.LoadMod(ref min, GetInputPortByName("Min"));

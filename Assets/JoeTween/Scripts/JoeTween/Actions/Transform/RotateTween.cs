@@ -44,8 +44,6 @@ namespace JoeTween
                 startRotQuat = Quaternion.Euler(startRotation.GetValue(0f));
                 endRotQuat = Quaternion.Euler(endRotation.GetValue(1f));
 
-                Debug.Log(startRotQuat.eulerAngles);
-
 
                 switch (space)
                 {
