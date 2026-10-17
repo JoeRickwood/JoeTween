@@ -53,7 +53,7 @@ namespace JoeTween
 
             if (playing && component != null)
             {
-                Matrix4x4 matrix = Matrix4x4.TRS(component.transform.position, component.transform.rotation, component.transform.lossyScale * 1.01f);
+                Matrix4x4 matrix = Matrix4x4.TRS(component.transform.position, component.transform.localRotation, component.transform.lossyScale * 1.025f);
 
                 MaterialPropertyBlock block = new MaterialPropertyBlock();
                 block.SetFloat("_Alpha", GetTweenProgress(_time));
