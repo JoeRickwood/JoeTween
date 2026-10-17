@@ -53,7 +53,12 @@ namespace JoeTween
 
             if (playing && component != null)
             {
-                Graphics.DrawMesh(component.mesh, component.transform.position, component.transform.rotation, materialChange, 0);
+                Matrix4x4 matrix = Matrix4x4.TRS(component.transform.position, component.transform.rotation, component.transform.lossyScale * 1.01f);
+
+                MaterialPropertyBlock block = new MaterialPropertyBlock();
+                block.SetFloat("_Alpha", GetTweenProgress(_time));
+
+                Graphics.DrawMesh(component.mesh, matrix, materialChange, 0, null, 0, block);
             }
         }
     }
