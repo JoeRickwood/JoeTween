@@ -30,7 +30,7 @@ namespace JoeTween
             return mod;
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             expression = VectorMathExpression.ADD;
             GetInputPortByName("Type").TryGetValue(out expression);

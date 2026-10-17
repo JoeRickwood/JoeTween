@@ -38,6 +38,7 @@ namespace JoeTween
         [SerializeReference]
         public TweenRuntimeData[] actionData; //Data To Build The Sequence From
         public int entranceIndex; //Index Of Action To Start From, Usually Set To The Start Node When Building This Data Object
+        public int loopCount;
 
         /// <summary>
         /// Plays The Tween On A Target On The TweenManager 

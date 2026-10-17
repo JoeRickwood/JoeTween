@@ -30,5 +30,15 @@ namespace JoeTween
 
             return curve;
         }
+
+        public static float EaseOutPow(float _t, float _pow = 3.0f)
+        {
+            return 1.0f - Mathf.Pow(1.0f - _t, _pow);
+        }
+
+        public static float EaseInPow(float _t, float _pow = 3.0f)
+        {
+            return Mathf.Pow(_t, _pow);
+        }
     }
 }

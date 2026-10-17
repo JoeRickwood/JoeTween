@@ -33,7 +33,7 @@ namespace JoeTween
             return mod;
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             x = new TweenValue<float>();
             TweenSequenceNodeExtensions.LoadMod(ref x, GetInputPortByName("X"));

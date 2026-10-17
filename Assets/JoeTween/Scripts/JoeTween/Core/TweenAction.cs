@@ -111,6 +111,18 @@ namespace JoeTween
             tweenCurve.postWrapMode = _mode;    
         }
 
+        internal void Restart()
+        {
+            ended = false;
+            playing = false;
+
+            //Restart "Child" Actions
+            foreach (var obj in sequenced)
+            {
+                obj.Restart();
+            }
+        }
+
         //Goes Through All Sequenced Actions And This Action And Updates The Target 
         public virtual void UpdateTargetRecursive(GameObject _target)
         {

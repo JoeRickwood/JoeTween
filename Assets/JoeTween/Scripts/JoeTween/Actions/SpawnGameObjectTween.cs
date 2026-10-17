@@ -50,7 +50,12 @@ namespace JoeTween
         {
             spawnPos.OnActionStart(target);
 
-            GameObject cur = GameObject.Instantiate(gameObjectPrefab, spawnPos.GetValue(0.0f), Quaternion.identity);
+            if (gameObjectPrefab == null)
+                return;
+
+            Vector3 position = space == TweenSpace.LOCAL ? target.transform.position + spawnPos.GetValue(0.0f) : spawnPos.GetValue(0.0f);
+
+            GameObject cur = GameObject.Instantiate(gameObjectPrefab, position, Quaternion.identity);
             var visualEffect = cur.GetComponent<VisualEffect>();
 
             if (lifetime !< 0)

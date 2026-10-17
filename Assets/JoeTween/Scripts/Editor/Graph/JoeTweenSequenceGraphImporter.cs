@@ -39,13 +39,14 @@ namespace JoeTween
 
             //Finds The Start Node Of The Graph
             INode startNode = graph.GetStartNode();
+            TweenStartNode tweenStartNode = graph.GetJoeTweenStartNode();
 
             //Creates The Sequence From The Start Node And Puts It Into The Runtime Asset
-            TweenActionBuilder.BuildTweenActionSequence(runtimeAsset, startNode, graph);
+            TweenActionBuilder.BuildTweenActionSequence(runtimeAsset, startNode, tweenStartNode, graph);
 
             //Sets The Texture Of The Asset To A Icon Img
             var icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
-                    "Assets/JoeTween/Icons/TweenGraphIcon.png");
+                    "Assets/Plugins/JoeTween/Icons/TweenGraphIcon.png");
 
             EditorGUIUtility.SetIconForObject(runtimeAsset, icon);
 
@@ -54,7 +55,7 @@ namespace JoeTween
             ctx.SetMainObject(runtimeAsset);
         }
 
-        public static void BuildTweenActionSequence(TweenRuntimeGraph _runtimeAsset, INode _startNode, TweenSequenceGraph _graph)
+        public static void BuildTweenActionSequence(TweenRuntimeGraph _runtimeAsset, INode _startNode, TweenStartNode _joeTweenStartNode, TweenSequenceGraph _graph)
         {
             TweenSequenceData data = new TweenSequenceData();
 
@@ -64,6 +65,9 @@ namespace JoeTween
             //Initialize The Lists To Be The Same Size As The Node Count
             _runtimeAsset.actionData = new TweenRuntimeData[allNodes.Length];
             _runtimeAsset.actions = new TweenAction[allNodes.Length];
+
+            _joeTweenStartNode?.LoadValues();
+            _runtimeAsset.loopCount = _joeTweenStartNode.loopCount;
 
             for (int i = 0; i < allNodes.Length; i++)
             {

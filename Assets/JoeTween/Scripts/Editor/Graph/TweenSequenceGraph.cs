@@ -61,5 +61,10 @@ namespace JoeTween
         {
             return GetNodes().OfType<TweenStartNode>().ToList().FirstOrDefault(); 
         }
+
+        internal TweenStartNode GetJoeTweenStartNode()
+        {
+            return GetNodes().OfType<TweenStartNode>().ToList().FirstOrDefault();
+        }
     }
 }

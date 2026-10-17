@@ -616,7 +616,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2841676755933307327, guid: 938c0ea1ca219a8429c192a9dcdd52f6, type: 3}
+      - m_Target: {fileID: 2841676755933307327, guid: 9ff201f122f777d43ae5ce1d2566a582, type: 3}
         m_TargetAssemblyTypeName: JoeTween.TweenRuntimeGraph, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 2

@@ -19,7 +19,7 @@ namespace JoeTween
                 return;
         }
 
-        protected abstract void LoadValues();
+        public abstract void LoadValues();
     }
 
 
@@ -53,18 +53,34 @@ namespace JoeTween
     [Serializable]
     class TweenStartNode : TweenActionNodeBase
     {
+        public int loopCount;
+
         protected override void OnDefinePorts(IPortDefinitionContext context)
         {
             context.AddOutputPort<TweenSequenceData>("Output").WithConnectorUI(PortConnectorUI.Arrowhead).Build();
+            context.AddInputPort<bool>("Looping").Build();
+            context.AddInputPort<int>("Loop Count").Build();
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
+            bool isLooping = false;
+            GetInputPortByName("Looping")?.TryGetValue(out isLooping);
 
+            if (!isLooping)
+            {
+                GetInputPortByName("Loop Count")?.TryGetValue(out loopCount);
+            }
+            else
+            {
+                loopCount = -1;
+            }
         }
 
         public override TweenAction GetTweenAction(TweenSequenceData _data)
         {
+            LoadValues();
+
             TweenAction tween = new BlankTween
             (
                 null, 0, false, null
@@ -96,7 +112,7 @@ namespace JoeTween
             context.AddInputPort<float>("Tween Length").Build();
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             GetInputPortByName("Tween Curve").TryGetValue(out animationCurve);
             GetInputPortByName("Tween Length").TryGetValue(out tweenLength);

@@ -21,7 +21,7 @@ namespace JoeTween
             context.AddInputPort<T>("End").Build();
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             base.LoadValues();
 

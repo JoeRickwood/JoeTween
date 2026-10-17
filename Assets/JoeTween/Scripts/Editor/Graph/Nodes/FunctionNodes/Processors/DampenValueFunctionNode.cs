@@ -25,7 +25,7 @@ namespace JoeTween
             return new DampenValueModifier(baseValue, dampenCurve);
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             LoadValueFromPort(GetInputPortByName("Base Value"), out baseValue);
             LoadValueFromPort(GetInputPortByName("Dampen Curve"), out dampenCurve);

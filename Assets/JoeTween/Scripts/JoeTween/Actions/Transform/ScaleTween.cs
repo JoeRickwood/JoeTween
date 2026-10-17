@@ -39,6 +39,11 @@ namespace JoeTween
 
         protected override void EndAction()
         {
+            if (component == null)
+                return;
+
+            component.localScale = endScale.GetValue(1);
+
             base.EndAction();
         }
 

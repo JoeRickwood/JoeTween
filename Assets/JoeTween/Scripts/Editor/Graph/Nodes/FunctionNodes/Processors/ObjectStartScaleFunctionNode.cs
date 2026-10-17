@@ -19,7 +19,7 @@ namespace JoeTween
             return new ObjectStartScaleTweenModifier();
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
 
         }

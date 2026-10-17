@@ -68,6 +68,9 @@ namespace JoeTween
 
             Tween tween = new Tween($"Action{System.Guid.NewGuid()}", graph.GetSequence());
             tween.action.UpdateTargetRecursive(_target);
+            tween.infiniteLoop = _tween.loopCount == -1;
+            tween.loopCount = _tween.loopCount;
+
             object target = tween.action.GetTarget();
 
 
@@ -164,10 +167,19 @@ namespace JoeTween
         /// </summary>
         internal static void UpdateTweens()
         {
+            if (activeTweenSequences == null)
+                return;
+
             foreach(List<Tween> tweenList in activeTweenSequences.Values)
             {
+                if (tweenList == null)
+                    continue;
+
                 foreach (Tween tween in tweenList)
                 {
+                    if (tween == null)
+                        continue;
+
                     tween.Update();
                 }
             }

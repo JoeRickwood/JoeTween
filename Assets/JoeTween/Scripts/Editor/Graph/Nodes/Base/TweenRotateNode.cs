@@ -41,7 +41,7 @@ namespace JoeTween
             return tween;
         }
 
-        protected override void LoadValues()
+        public override void LoadValues()
         {
             base.LoadValues();
 
